@@ -13,7 +13,7 @@ In general, constants in scripts have to be adjusted before script execution.
 
 ##### Defining runs
 
-Runs executed in batch are defined in CSV file. This file must have the format as in [file](https://github.com/dudko/hfs/blob/master/flexpart/sample_run.csv). CSV files can be prepared and further updated by major spreadsheet editors.
+Runs executed in batch are defined in CSV file. This file must have the format as in [`sample_runs.csv`](https://github.com/dudko/hfs/blob/master/flexpart/sample_runs.csv). CSV files can be prepared and further updated by major spreadsheet editors.
 
 ##### [`generateAvailable.py`](https://github.com/dudko/hfs/blob/master/flexpart/generateAvailable.py)
 
