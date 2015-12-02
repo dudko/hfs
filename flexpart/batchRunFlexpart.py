@@ -1,19 +1,28 @@
-#!/usr/bin/python
+#! /usr/bin/python2.7
 
-from datetime import datetime, timedelta
+""" Run flexpart in batch using input data from cvs file. """
+
+""" Modules """
 import os
-import subprocess
-import csv
-from string import Template
-import pdb
 import sys
-
+import csv
+import time
+import subprocess
 from templates import RELEASES, COMMAND
+from string import Template
+from datetime import datetime
 
-FLEXPART = '/home/dusan/Projects/recetox/usecases/flexpart/install/flexpart_82-3/'
-OUTDIR = '/home/dusan/Projects/recetox/usecases/flexpart/install/flexpart_82-3/output'
+""" Constants """
+FLEXPART = '/mnt/working/flexpart_test/'
+OUTDIR = '/tmp/test/'
 METEODIR = '/mnt/meteo/'
-RUNSCSV = 'runs.csv'
+RUNSCSV = '/tmp/runs.csv'
+
+# Check if all paths are correcly ended with /
+for path in [FLEXPART, OUTDIR, METEODIR]:
+  if path[-1] != "/":
+    print "Missing / in %s." % path
+    sys.exit()  
 
 # Check FLEXPART executable
 if not os.path.isfile('%sFLEXPART_GFORTRAN' % FLEXPART):
@@ -32,14 +41,17 @@ runs.next()
 
 for run in runs:
 
+  # Create timestamp
+  tsStart = time.time()
+
   # Load variables from line
   runName = run[0]
   
   relBox = [run[1], run[2], run[3], run[4]]
   relStart = datetime(int(run[5]), int(run[6]), int(run[7]), int(run[8]), int(run[9]))
   relEnd = datetime(int(run[10]), int(run[11]), int(run[12]), int(run[13]), int(run[14]))
-  particles = run[15] if "PERMIN" not in run[15] else ((relEnd - relStart).total_seconds() // 60) \
-    * int(run[15].split('')[0])
+  particles = run[15] if "PERMIN" not in run[15] else int(((relEnd - relStart).total_seconds() // 60) \
+    * int(run[15].split()[0]))
 
   simStart = datetime(int(run[16]), int(run[17]), int(run[18]), int(run[19]), int(run[20]))
   simEnd = datetime(int(run[21]), int(run[22]), int(run[23]), int(run[24]), int(run[25]))
@@ -47,12 +59,12 @@ for run in runs:
 
   # Create pathnames
   with open("%spathnames" % FLEXPART, "w") as f:
-    f.write(FLEXPART+'\n'+OUTDIR+'\n'+METEODIR+'\n'+METEODIR+"AVAILABLE")
+    f.write(FLEXPART+"options/\n"+OUTDIR+runName+"/\n"+METEODIR+"\n"+METEODIR+"AVAILABLE")
     f.close()
 
   # Create outdir from run name
   if not os.path.exists("%s%s" % (OUTDIR, runName)):
-    os.makedir("%s%s" % (OUTDIR, runName))
+    os.mkdir("%s%s" % (OUTDIR, runName))
 
   # Generate RELEASES and COMMAND
   with open("%soptions/RELEASES" % FLEXPART, "w") as f:
@@ -66,18 +78,23 @@ for run in runs:
       simEndDate=simEnd.strftime('%Y%m%d'), simEndTime=simEnd.strftime('%H%M'), simDir=simDir))
     f.close()
 
-# os.system("vim -c wq /mnt/working/flexpart_indiaLGE/options/COMMAND")
+  # Execute FLEXPART_GFORTRAN
+  print "EXECUTING : %s" % runName
+  print datetime.fromtimestamp(tsStart).strftime('STARTED : %Y-%b-%d %H:%M:%S')
+  os.chdir(FLEXPART)
+  flexProc = subprocess.Popen("./FLEXPART_GFORTRAN", shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+  stdout, stderr = flexProc.communicate()
 
-#   os.chdir("/mnt/working/flexpart_indiaLGE/")
-#   #os.system("./FLEXPART_GFORTRAN")
-#   h = subprocess.Popen("./FLEXPART_GFORTRAN", shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-#   stdout, stderr = h.communicate()
+  # Log run
+  tsEnd = time.time()
+  with open("%slog.run" % FLEXPART, "a") as f:
+    f.write("RUNNAME : %s\n" % runName)
+    f.write("TIMESTAMP : " + datetime.fromtimestamp(tsEnd).strftime('%Y-%m-%d %H:%M:%S\n'))
+    f.write("RELEASE : " + relStart.strftime("%Y%m%d %H%M - ") + relEnd.strftime("%Y%m%d %H%M\n"))
+    f.write("SIMULATION : " + simStart.strftime("%Y%m%d %H%M - ") + simEnd.strftime("%Y%m%d %H%M\n"))
+    f.write("STDOUT : " + stdout)
+    f.write("STDERR : " + stderr)
+    f.write("\n------------------------------\n")
+    f.close()
 
-#   with open("log.run", "a") as f:
-#     f.write(start.strftime("%Y%m%d %H%M\n"))
-#     f.write(end.strftime("%Y%m%d %H%M\n"))
-#     f.write(start_run.strftime("%Y%m%d %H%M\n"))
-#     f.write(stdout)
-#     f.write(stderr)
-#     f.write("------------------------------\n\n")
-#     f.close()
+  print datetime.fromtimestamp(tsEnd).strftime('DONE : %Y-%b-%d %H:%M:%S\n')

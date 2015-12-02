@@ -1,17 +1,14 @@
-# Generate AVAILABLE file for meteo files in entered directory.
-# AVAILABLE is written to this dir.
-#
-# Dusan Lago <dusan.lago at gmail.com>
-# Tested with Python 2.7.6
-# 2015-12-01
+""" Generate AVAILABLE file for meteo files in METEO_DIR.
+	AVAILABLE is written to METEO_DIR. Only meteo files valid
+	for METEO_PREFIX are included.
+"""
 
 import glob
 import os
 import sys
 
-"""Constants"""
-METEO_DIR = "/mnt/meteo"
-
+""" Constants """
+METEO_DIR = "/mnt/meteo/"
 # prefix in regex format
 METEO_PREFIX = "EN*"
 
@@ -23,10 +20,10 @@ else:
   sys.exit()
 
 # Load all files and sort as in AVAILABLE
-meteo_files = glob.glob('EN*')
+meteo_files = glob.glob(METEO_PREFIX)
 meteo_files.sort()
 
-# Check if any meteo file in dir
+# Check if any meteo file exists
 if not meteo_files:
   print("\nDirectory does not contain meteo files.")
   sys.exit()

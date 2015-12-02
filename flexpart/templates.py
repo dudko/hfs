@@ -1,3 +1,5 @@
+""" Templates for RELEASES and COMMAND """
+
 from string import Template
 
 RELEASES = Template('''\
@@ -59,4 +61,4 @@ $simEndDate $simEndTime
 2     IND_RECEPTOR
 0     MQUASILAG
 0     NESTED_OUTPUT
-0     LINIT_COND''')
+0     LINIT_COND\n''')

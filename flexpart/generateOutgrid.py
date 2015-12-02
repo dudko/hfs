@@ -1,10 +1,6 @@
-# Generate custom OUTGRID
-#
-# Dusan Lago <dusan.lago at gmail.com>
-# Tested with Python 2.7.6
-# 2015-12-01
+""" Generate custom OUTGRID """
 
-OUTGRID = open('OUTGRID', 'w')
+OUTGRID = open('/mnt/flexpart/options/OUTGRID', 'w')
 
 OUTGRID_TOP="""\
 ********************************************************************************

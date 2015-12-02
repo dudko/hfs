@@ -1,3 +1,4 @@
 ,release box in DEG,,,,release,,,,,,,,,,,simulation,,,,,,,,,,
 run name,lon lower left,lat lower left,lon upper right,lat upper right,start year,start month,start day,start hour,start minute,end year,end month,end day,end hour,end minute,number of particles (NUM PERMIN),start year,start month,start day,start hour,start minute,end year,end month,end day,end hour,end minute,direction
-H1,25.66,35.33,25.67,35.34,2012,3,12,18,0,2012,3,12,18,0,35700,2012,3,12,18,0,2012,3,12,18,0,-1
+test1,77.06798,10.09224,77.06898,10.09324,2014,6,9,13,20,2014,6,10,1,10,10000,2014,6,9,11,0,2014,6,10,20,0,1
+test2,77.06798,10.09224,77.06898,10.09324,2014,6,9,13,20,2014,6,10,1,10,60 PERMIN,2014,6,9,11,0,2014,6,10,20,0,-1
