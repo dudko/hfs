@@ -25,4 +25,4 @@ Generate custom OUTGRID.
 
 ##### [`batchRunFlexpart.py`](https://github.com/dudko/hfs/blob/master/flexpart/batchRunFlexpart.py)
 
-Iteratively load run definitions and create configuration files (`pathnames, RELEASES, COMMAND`) according to them. `RELEASES` and `COMMAND` are generated from templates in [file](https://github.com/dudko/hfs/blob/master/flexpart/templates.py).
+Iteratively load run definitions and create configuration files (`pathnames, RELEASES, COMMAND`) according to them. `RELEASES` and `COMMAND` are generated from [`templates.py`](https://github.com/dudko/hfs/blob/master/flexpart/templates.py).
