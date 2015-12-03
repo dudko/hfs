@@ -36,7 +36,7 @@ def tdump2kml(inputDir):
             p = subprocess.Popen("C:\\hysplit4\\exec\\trajplot.exe -i%s -o%s.ps -a3 -v1 -l1" % \
                 (entry, entry), shell=True, stdout=subprocess.PIPE)
             p.wait()
-
+            os.remove(entry[:-6])
             #p_out = p.communicate()
             #print p_out[0], p_out[1]
 

@@ -13,7 +13,7 @@ INPUTDIR = 'C:\out'
 
 """ Functions """
 def mergeShapes(inputDir):
-    """ 
+    """
     Merge all shapefiles inside of all directories of inputDir
     """
     os.chdir(inputDir)
@@ -31,10 +31,10 @@ def mergeShapes(inputDir):
             merged_shapes.records.extend(reader.records())
 
         merged_shapes.fields = list(reader.fields)
-        merged_shapes.save('%s.shp"'% run)
+        merged_shapes.save('MERGED_%s.shp"'% run)
 
         # Feedback
-        print "MERGED : %s\%s.shp" % (os.getcwd(), run)
+        print "MERGED : %s\MERGED_%s.shp" % (os.getcwd(), run)
 
         os.chdir("../../")
 
