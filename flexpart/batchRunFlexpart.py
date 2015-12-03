@@ -13,10 +13,10 @@ from string import Template
 from datetime import datetime
 
 """ Constants """
-FLEXPART = '/mnt/working/flexpart_test/'
-OUTDIR = '/tmp/test/'
-METEODIR = '/mnt/meteo/'
-RUNSCSV = '/tmp/runs.csv'
+FLEXPART = '/mnt/working/demo/flexpart/'
+OUTDIR = '/mnt/working/demo/out/'
+METEODIR = '/mnt/meteo/indiaLGE/'
+RUNSCSV = '/mnt/working/demo/sample_runs.csv'
 
 # Check if all paths are correcly ended with /
 for path in [FLEXPART, OUTDIR, METEODIR]:
@@ -85,8 +85,12 @@ for run in runs:
   flexProc = subprocess.Popen("./FLEXPART_GFORTRAN", shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
   stdout, stderr = flexProc.communicate()
 
-  # Log run
   tsEnd = time.time()
+  
+  print "OUTPUT : " + stdout + stderr
+  print datetime.fromtimestamp(tsEnd).strftime('DONE : %Y-%b-%d %H:%M:%S\n')
+
+  # Log run
   with open("%slog.run" % FLEXPART, "a") as f:
     f.write("RUNNAME : %s\n" % runName)
     f.write("TIMESTAMP : " + datetime.fromtimestamp(tsEnd).strftime('%Y-%m-%d %H:%M:%S\n'))
@@ -96,5 +100,3 @@ for run in runs:
     f.write("STDERR : " + stderr)
     f.write("\n------------------------------\n")
     f.close()
-
-  print datetime.fromtimestamp(tsEnd).strftime('DONE : %Y-%b-%d %H:%M:%S\n')
