@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-#
-# Count how many trajectories per station entered the area around points of
-# interest. Stations need to be specified in CVS file in format (station, lat,
-# lon). CSV file used for batch run definition can be used as well. Points are
-# define in this script a tripple (point name, lat, lon).
+
+""" Count how many trajectories per station entered the area around points of
+interest. Stations need to be specified in CVS file in format (station, lat,
+lon). CSV file used for batch run definition can be used as well. Points are
+define in this script a tripple (point name, lat, lon)."""
 
 """Modules"""
 import math
@@ -16,14 +16,15 @@ from numpy import *
 # Reader csv file with station coordinates
 source = open("runs.csv", "r")
 
+# radius around point in meters
+RADIUS = 50000
+
 # point tripples
 points = [("Oki", 36.288333, 133.184722),\
           ("Tsushima", 34.233889, 129.275),\
           ("Hedo", 26.866944, 128.248611)]
 
-# radius around point in meters
-r = 50000
-
+""" Functions """
 def distance(lat1, lon1, lat2, lon2):
     """Calculate the distance between two locations.
     dist = arccos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * \
@@ -51,7 +52,7 @@ def distance(lat1, lon1, lat2, lon2):
     return dist*1000
 
    
-# Main loop
+""" Main """
 for point in points:
     source.seek(0, 0)
     stations = csv.reader(source)
@@ -77,7 +78,7 @@ for point in points:
                 
                 d = distance(float(point[1]), float(point[2]), float(line[1]), float(line[0]))
 
-                if d <= r:
+                if d <= RADIUS:
                     hit += 1
                     break
 
@@ -86,5 +87,3 @@ for point in points:
         print "%s %s %s %s" % (point, station[0], total, hit)
             
         os.chdir("../../")
-
-print "Done"

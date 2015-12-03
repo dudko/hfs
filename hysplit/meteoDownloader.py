@@ -24,8 +24,11 @@ MONTHS = [
 FTPADDR = 'arlftp.arlhq.noaa.gov'
 WORKDIR = 'pub/archives/gdas1'
 
-
+""" Functions """
 def downloadMeteo(start, end, outdir):
+    """
+    Download meteo files for a given date range.
+    """
     # Create output dir if not exists
     if not os.path.exists(outdir):
         os.makedirs(outdir)   
@@ -69,5 +72,6 @@ def downloadMeteo(start, end, outdir):
 
             output_file.close()
 
+""" Run standalone """
 if __name__ == '__main__':
     downloadMeteo(START, END, OUTDIR)
