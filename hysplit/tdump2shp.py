@@ -8,7 +8,7 @@ import subprocess
 import glob
 
 """ Constants """
-INPUTDIR = '/tmp/tdumps'
+INPUTDIR = 'C:/out'
 
 """ Functions """
 def tdump2shp(inputDir):
@@ -34,7 +34,7 @@ def tdump2shp(inputDir):
 
             # Set the number of lines to be ommited. Based on the number of meteo files.
             offset = int(hSource[0].split()[0]) + 4
-            
+
             if len(hSource) > offset:
                 #pdb.set_trace()
                 out.write("  1, %s %s\n" % (hSource[offset].split()[10], \
@@ -48,15 +48,14 @@ def tdump2shp(inputDir):
                 out.close()
 
                 os.chdir("shapes")
-        
+
                 # Convert GIS file to shape file.
                 subprocess.Popen("C:\\hysplit4\\exec\\ascii2shp.exe %s lines < %s.gis" % \
                     (entry, entry), shell=True, stdout=subprocess.PIPE)
                 os.chdir("..")
 
-        # feedback
-        print " * %s DONE" % run
-        print "  %s\shapes" % os.getcwd()
+        # Feedback
+        print "DONE : %s %s\shapes" % (run, os.getcwd())
 
         os.chdir("..")
 

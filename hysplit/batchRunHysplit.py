@@ -21,10 +21,10 @@ import math
 from templates import ASCDATA, SETUP
 
 """ Constants """
-HYSPLIT = 'C:\\hysplit4\\exec\\hyts_std.exe'
-OUTDIR = 'C:\\Users\\user\\Desktop\\out\\'
-METEODIR = 'D:\\meteo\\'
-RUNSCSV = 'C:\\Users\\user\\Desktop\\hfs\\hysplit\\sample_run.csv'
+HYSPLIT = 'C:/hysplit4/exec/hyts_std.exe'
+OUTDIR = 'C:/out/'
+METEODIR = 'D:/meteo/'
+RUNSCSV = 'C:/Users/user/Desktop/hfs/hysplit/sample_runs.csv'
 TOPOFMODEL = "15000" # Should be at least 1000
 
 # Check HYSPLIT binary
@@ -49,11 +49,11 @@ def createSETUP():
     setupFile.write(SETUP)
     setupFile.close()
 
-def runBatch(outdir, meteodir, csv):
+def runBatch(outdir, meteodir, runCsv):
     """
     Run the model for each given hour every day within the date range.
     """
-    runs = csv.reader(open(csv, 'r'))
+    runs = csv.reader(open(runCsv, 'r'))
     # First line is header
     runs.next()
 

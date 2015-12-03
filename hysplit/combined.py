@@ -8,12 +8,16 @@ from tdump2kml import tdump2kml
 from mergeShapes import mergeShapes
 
 """ Constants """
-OUTDIR = 'C:\\Users\\user\\Desktop\\out\\'
-METEODIR = 'D:\\meteo\\'
-RUNSCSV = 'C:\\Users\\user\\Desktop\\hfs\\hysplit\\sample_run.csv'
+OUTDIR = 'C:/out/'
+METEODIR = 'D:/meteo/'
+RUNSCSV = 'C:/Users/user/Desktop/hfs/hysplit/sample_runs.csv'
 
 """ Main """
+print "== BATCH RUN =="
 runBatch(OUTDIR, METEODIR, RUNSCSV)
+print "== TDUMP2SHP =="
 tdump2shp(OUTDIR)
+print "== TDUMP2KML =="
 tdump2kml(OUTDIR)
+print "== MERGING SHAPEFILES =="
 mergeShapes(OUTDIR)

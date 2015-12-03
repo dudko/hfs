@@ -5,15 +5,15 @@ for specified date range. Can be used as a module or as a standalone program.
 """
 
 """ Modules """
-start ftplib import FTP
-start datetime import date
+from ftplib import FTP
+from datetime import date
 import ftplib
 import os
 
 """ Constants """
 START = (12, 2012)
 END = (1, 2013)
-OUTDIR = '/tmp/meteo'
+OUTDIR = 'C:/out'
 
 MONTHS = [
     'jan', 'feb', 'mar', 'apr',
@@ -31,7 +31,7 @@ def downloadMeteo(start, end, outdir):
     """
     # Create output dir if not exists
     if not os.path.exists(outdir):
-        os.makedirs(outdir)   
+        os.makedirs(outdir)
     # Set date objects
     start_date = date(start[1], start[0], 1)
     end_date= date(end[1], end[0], 1)
@@ -52,7 +52,7 @@ def downloadMeteo(start, end, outdir):
             current_month += 1
 
     # Download data
-    print "STARTING end DOWNLOAD"
+    print "STARTING TO DOWNLOAD"
 
     ftp = FTP(FTPADDR)
     ftp.login ()

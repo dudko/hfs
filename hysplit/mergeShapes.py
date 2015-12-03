@@ -9,16 +9,14 @@ import sys
 import shapefile
 
 """ Constants """
-INPUTDIR = '/tmp/out'
+INPUTDIR = 'C:\out'
 
 """ Functions """
 def mergeShapes(inputDir):
-    """
+    """ 
     Merge all shapefiles inside of all directories of inputDir
     """
     os.chdir(inputDir)
-
-    print "\n * starting to merge shape files\n"
 
     for run in os.walk('.').next()[1]:
         os.chdir(run + "\\shapes")
@@ -35,9 +33,8 @@ def mergeShapes(inputDir):
         merged_shapes.fields = list(reader.fields)
         merged_shapes.save('%s.shp"'% run)
 
-         # feedback
-        print " * %s DONE" % run
-        print "  %s\\%s.shp" % (os.getcwd(), run)
+        # Feedback
+        print "MERGED : %s\%s.shp" % (os.getcwd(), run)
 
         os.chdir("../../")
 
