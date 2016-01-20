@@ -13,10 +13,10 @@ from string import Template
 from datetime import datetime
 
 """ Constants """
-FLEXPART = '/mnt/working/demo/flexpart/'
-OUTDIR = '/mnt/working/demo/out/'
+FLEXPART = '/mnt/working/flexpart_bug1/'
+OUTDIR = '/mnt/working/bug/out5/'
 METEODIR = '/mnt/meteo/indiaLGE/'
-RUNSCSV = '/mnt/working/demo/sample_runs.csv'
+RUNSCSV = '/mnt/working/bug/new_scripts/flexpart/sample_runs.csv'
 
 # Check if all paths are correcly ended with /
 for path in [FLEXPART, OUTDIR, METEODIR]:
@@ -47,10 +47,10 @@ for run in runs:
   # Load variables from line
   runName = run[0]
   
-  relBox = [run[1], run[2], run[3], run[4]]
+  relBox = [float(run[1]), float(run[2]), float(run[3]), float(run[4])]
   relStart = datetime(int(run[5]), int(run[6]), int(run[7]), int(run[8]), int(run[9]))
   relEnd = datetime(int(run[10]), int(run[11]), int(run[12]), int(run[13]), int(run[14]))
-  particles = run[15] if "PERMIN" not in run[15] else int(((relEnd - relStart).total_seconds() // 60) \
+  particles = int(run[15]) if "PERMIN" not in run[15] else int(((relEnd - relStart).total_seconds() // 60) \
     * int(run[15].split()[0]))
 
   simStart = datetime(int(run[16]), int(run[17]), int(run[18]), int(run[19]), int(run[20]))
@@ -68,14 +68,15 @@ for run in runs:
 
   # Generate RELEASES and COMMAND
   with open("%soptions/RELEASES" % FLEXPART, "w") as f:
-    f.write(RELEASES.substitute(relStartDate=relStart.strftime('%Y%m%d'), relStartTime=relStart.strftime('%H%M'), \
-      relEndDate=relEnd.strftime('%Y%m%d'), relEndTime=relEnd.strftime('%H%M'), relBoxLonLL=relBox[0], \
-      relBoxLatLL=relBox[1], relBoxLonUR=relBox[2], relBoxLatRL=relBox[3], particles=particles))
+    f.write(RELEASES.substitute(relStartDate=relStart.strftime('%Y%m%d'), relStartTime=relStart.strftime('%H%M00'), \
+      relEndDate=relEnd.strftime('%Y%m%d'), relEndTime=relEnd.strftime('%H%M00'), relBoxLonLL="%09.4f" % relBox[0], \
+      relBoxLatLL="%09.4f" % relBox[1], relBoxLonUR="%09.4f" % relBox[2], relBoxLatRL="%09.4f" % relBox[3], \
+      particles="%09d" % particles))
     f.close()
 
   with open("%soptions/COMMAND" % FLEXPART, "w") as f:
-    f.write(COMMAND.substitute(simStartDate=simStart.strftime('%Y%m%d'), simStartTime=simStart.strftime('%H%M'), \
-      simEndDate=simEnd.strftime('%Y%m%d'), simEndTime=simEnd.strftime('%H%M'), simDir=simDir))
+    f.write(COMMAND.substitute(simStartDate=simStart.strftime('%Y%m%d'), simStartTime=simStart.strftime('%H%M00'), \
+      simEndDate=simEnd.strftime('%Y%m%d'), simEndTime=simEnd.strftime('%H%M00'), simDir=simDir))
     f.close()
 
   # Execute FLEXPART_GFORTRAN
