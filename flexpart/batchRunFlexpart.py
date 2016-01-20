@@ -13,10 +13,10 @@ from string import Template
 from datetime import datetime
 
 """ Constants """
-FLEXPART = '/mnt/working/flexpart_bug1/'
-OUTDIR = '/mnt/working/bug/out5/'
+FLEXPART = '/mnt/working/demo/flexpart/'
+OUTDIR = '/mnt/working/demo/out/'
 METEODIR = '/mnt/meteo/indiaLGE/'
-RUNSCSV = '/mnt/working/bug/new_scripts/flexpart/sample_runs.csv'
+RUNSCSV = '/mnt/working/demo/sample_runs.csv'
 
 # Check if all paths are correcly ended with /
 for path in [FLEXPART, OUTDIR, METEODIR]:

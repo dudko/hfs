@@ -24,8 +24,8 @@ $relBoxLatLL
 $relBoxLonUR
 $relBoxLatRL
 1
-1500.0000000E+00
-5000.0000
+0.0000000E+00
+200.0000
 $particles
 1.0000E00
 SAMPLE_1.0''')
