@@ -65,7 +65,7 @@ def runBatch(outdir, meteodir, runCsv):
         startDate = date(int(line[4]), int(line[5]), int(line[6]))
         endDate = date(int(line[7]), int(line[8]), int(line[9]))
         runtime = int(line[11])
-        runtimeWeeks = math.ceil(runtime/(24.0*7))
+        runtimeWeeks = math.ceil(abs(runtime)/(24.0*7))
         hours = line[10].split()
 
         tsStart = time.time()
@@ -95,12 +95,12 @@ def runBatch(outdir, meteodir, runCsv):
                 control.write(TOPOFMODEL + '\n')
 
                 # Add sufficient number of meteo files
-                if runtimeWeeks > 0:
-                    meteoDateEnd = startDate + timedelta(weeks=runtimeWeeks)
+                if runtime > 0:
                     meteoDateStart = startDate
+                    meteoDateEnd = startDate + timedelta(weeks=runtimeWeeks) + timedelta(days=1)
                 else:
-                    meteoDateStart = startDate - timedelta(weeks=abs(runtimeWeeks))
-                    meteoDateEnd = startDate
+                    meteoDateStart = startDate - timedelta(weeks=runtimeWeeks)
+                    meteoDateEnd = startDate + timedelta(days=1)
 
                 # Set of all meteo files is created
                 meteoFiles = Set()
@@ -109,7 +109,6 @@ def runBatch(outdir, meteodir, runCsv):
                     meteoFiles.add('gdas1.' + meteoDateStart.strftime('%b%y').lower() \
                         + '.w' + str(weekOfMonth(meteoDateStart)))
                     meteoDateStart = meteoDateStart + timedelta(days=1)
-
                 control.write(str(len(meteoFiles)) + '\n')
 
                 for meteoFile in meteoFiles:
